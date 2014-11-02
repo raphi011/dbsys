@@ -13,13 +13,14 @@ insert into dbs.krankenhaus (name, anschrift, geleitet_von) values ('krankenhaus
 insert into dbs.krankenhaus (name, anschrift, geleitet_von) values ('krankenhaus 2', 'anschrift 2', 2);
 insert into dbs.krankenhaus (name, anschrift, geleitet_von) values ('krankenhaus 3', 'anschrift 3', 3);
 
-insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 1', 10, 'anschrift 1', 3);
+insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 1', 10, 'anschrift 1', 1);
 insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 2', 10, 'anschrift 2', 2);
-insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 1', 30, 'anschrift 3', 3);
+insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 1', 30, 'anschrift 3', 4);
+insert into dbs.abteilung (name, krankenhaus, anschrift, koordiniert_von) values ('abteilung 1', 20, 'anschrift 4', 3);
 
 insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (1, 'abteilung 1', 10, 20 );
 insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (2, 'abteilung 2', 10, 15 );
-insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (3, 'abteilung 1', 30, 30 );
+insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (3, 'abteilung 1', 20, 30 );
 insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (4, 'abteilung 1', 30, 30 );
 
 commit transaction;

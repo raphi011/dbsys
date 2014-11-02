@@ -19,5 +19,11 @@ drop sequence dbs.patient_id_seq;
 drop sequence dbs.krankenhaus_id_seq;
 drop sequence dbs.behandelt_id_seq;
 
+drop function t_check_treated();
+drop function t_check_hospital_chef();
+drop function t_check_department_chef();
+drop function p_move_healed();
+drop function p_calc_salary();
+drop function f_calc_salary(svnr int, month int, year int);
 
 drop schema dbs;
