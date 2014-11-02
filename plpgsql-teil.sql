@@ -81,20 +81,20 @@ begin
 	fetch curs into row;
 
 	while found loop
-		insert into dbs.akteneintrag values (row.person, row.krankenhaus, row.krankheit, current_timestamp - row.dauer * interval '1 hour', current_timestamp);
+		insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (row.person, row.krankenhaus, row.krankheit, current_timestamp - row.dauer * interval '1 hour', current_timestamp);
 		delete from dbs.behandelt where id = row.id;
 		fetch curs into row;
 	end loop;
 
 	delete from dbs.patient where id not in (select distinct patient from dbs.behandelt);
 	close curs;
-end;
-$$ 
+end;trigger
+$$ trigger
 language plpgsql;
 
 -- p_calc_salary
 create or replace function p_calc_salary() returns void as
-$$
+$$trigger
 declare 
 	mitarbeiter record;
 	monat int = extract(month from current_date);

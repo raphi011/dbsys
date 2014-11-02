@@ -1,20 +1,20 @@
 -- test salary constraint
-insert into dbs.mitarbeiter (mitarbeiter, abteilung, krankenhaus, gehalt) values (1, 'abteilung 1', 10, 0); 
+insert into dbs.mitarbeiter (person, abteilung, krankenhaus, gehalt) values (1, 'abteilung 1', 10, 0);  -- check constraint violation
 
 -- test bonus 
-insert into dbs.krankheit values ('test krankheit', 0);
+insert into dbs.krankheit values ('test krankheit', 0); -- check constraint violation
 
 -- check dates
-insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (1, '10', 'krankheit 1', current_timestamp, current_timestamp - interval '2 hour');
+insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (1, '10', 'krankheit 1', current_timestamp, current_timestamp - interval '2 hour'); -- check constraint violation
 
 -- test hospital chef
-update dbs.krankenhaus set geleitet_von = 3 where id = 10;
+update dbs.krankenhaus set geleitet_von = 3 where id = 10; -- trigger error 
 
 -- test department chef
-update dbs.abteilung set koordiniert_von = 3 where name = 'abteilung 1' and krankenhaus = 10;
+update dbs.abteilung set koordiniert_von = 3 where name = 'abteilung 1' and krankenhaus = 10; -- trigger error
 
 -- test check treated
-insert into dbs.behandelt (arzt, krankheit, patient, dauer) values (1, 'krankheit 1', 10, 2);
+insert into dbs.behandelt (arzt, krankheit, patient, dauer) values (1, 'krankheit 1', 10, 2); -- trigger error
 
 -- test f calc salary
 select f_calc_salary(4, 10,2014); -- should be 5010 ( 167 * 30 )
