@@ -27,11 +27,11 @@ create trigger t_check_department_chef before insert or update on dbs.abteilung 
 create or replace function t_check_treated() returns trigger as 
 $$
 begin
-	if ((select id from dbs.behandelt where patient = new.patient and krankheit = new.krankheit) is not null) then
+	if ((select count(*) from dbs.behandelt where patient = new.patient and krankheit = new.krankheit) > 1) then
 		raise exception 'ein Patient kann nicht öfters für die selbe Krankheit behandelt werden';	
 	end if;
 
-	if ((select person from dbs.mitarbeiter m natural join dbs.spezialisiert s where m.person = new.arzt and s.krankheit = new.krankheit) is null) then
+	if ((select count(*) from dbs.mitarbeiter m natural join dbs.spezialisiert s where m.person = new.arzt and s.krankheit = new.krankheit) = 0) then
 		raise exception 'dem Arzt seine Abteilung muss auf die zu behandelnde Krankheit spezialisiert sein';
 	end if;
 
@@ -39,7 +39,7 @@ begin
 end;
 $$ language plpgsql;
 
-create trigger t_check_treated before insert or update on dbs.behandelt for each row execute procedure t_check_treated();
+create trigger t_check_treated after insert or update on dbs.behandelt for each row execute procedure t_check_treated();
 
 
 --f_calc_salary
@@ -48,6 +48,9 @@ $$
 declare
 	h numeric = 0;
 begin
+	if ((select person from dbs.mitarbeiter where person = svnr) is null) then
+		raise exception 'es exisitiert kein mitarbeiter mit dieser svnr';
+	end if;
 	if ((select person from dbs.arzt where person = svnr) is null) then
 		if ((select honorar from dbs.lohnzettel where mitarbeiter = svnr and monat = month and jahr = year and honorar != 0) is null) then
 			select gehalt * 167 into h from dbs.mitarbeiter where person = svnr;
@@ -94,7 +97,7 @@ language plpgsql;
 
 -- p_calc_salary
 create or replace function p_calc_salary() returns void as
-$$trigger
+$$
 declare 
 	mitarbeiter record;
 	monat int = extract(month from current_date);

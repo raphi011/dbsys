@@ -30,16 +30,18 @@ insert into dbs.lohnzettel (mitarbeiter, honorar, monat, jahr) values (1, 2000, 
 insert into dbs.lohnzettel (mitarbeiter, honorar, monat, jahr) values (1, 2000, 1, 2015);	
 insert into dbs.lohnzettel (mitarbeiter, honorar, monat, jahr) values (4, 2000, 1, 2015);	
 
-insert into dbs.arzt (person) values (1);
-insert into dbs.arzt (person) values (2);
-insert into dbs.arzt (person) values (3);
+insert into dbs.arzt values (1);
+insert into dbs.arzt values (2);
+insert into dbs.arzt values (3);
 
 insert into dbs.krankheit (name, bonus) values ('krankheit 1', 1);
 insert into dbs.krankheit (name, bonus) values ('krankheit 2', 1.2);
 insert into dbs.krankheit (name, bonus) values ('krankheit 3', 1.3);
 
 insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 10, 'krankheit 1');
-insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 2', 10, 'krankheit 2');
+insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 2', 10, 'krankheit 1');
+insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 20, 'krankheit 1');
+insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 20, 'krankheit 2');
 insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 30, 'krankheit 3');
 
 insert into dbs.klasse (name) values ('klasse 1');

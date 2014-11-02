@@ -17,15 +17,16 @@ update dbs.abteilung set koordiniert_von = 3 where name = 'abteilung 1' and kran
 insert into dbs.behandelt (arzt, krankheit, patient, dauer) values (1, 'krankheit 1', 10, 2); -- trigger error
 
 -- test f calc salary
+select f_calc_salary(10000, 10, 2014); -- should throw an error
 select f_calc_salary(4, 10,2014); -- should be 5010 ( 167 * 30 )
-select f_calc_salary(1, 10,2014); -- should be 40 ( 40 * 2 )
+select f_calc_salary(1, 10,2014); -- should be 40 ( 20 * 2 )
 
 -- test move healed
 select p_move_healed();
 select id from dbs.behandelt where id = 30; -- should not exist
 select id from dbs.patient where person = 2; -- shouldn't exist either
-select * from dbs.akteneintrag where person = 2; -- should exist
+select id from dbs.akteneintrag where person = 2; -- should exist
 
 -- test p calc salary
 select p_calc_salary(); 
-select * from dbs.lohnzettel; -- all pay slips should've been generated
+select count(*) from dbs.lohnzettel; -- all pay slips should've been generated
