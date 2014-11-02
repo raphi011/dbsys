@@ -94,7 +94,7 @@ language plpgsql;
 
 -- p_calc_salary
 create or replace function p_calc_salary() returns void as
-$$trigger
+$$
 declare 
 	mitarbeiter record;
 	monat int = extract(month from current_date);
