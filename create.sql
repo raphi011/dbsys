@@ -17,12 +17,12 @@ person integer references dbs.person(svnr) not null primary key,
 beschaeftigt_seit date not null default CURRENT_DATE,
 abteilung varchar(128),
 krankenhaus integer,
-gehalt real check (gehalt > 0) );
+gehalt numeric check (gehalt > 0) );
 
 
 create table dbs.lohnzettel (
 mitarbeiter integer references dbs.mitarbeiter(person) not null,
-honorar double precision not null,
+honorar numeric not null,
 monat smallint not null,
 jahr smallint not null,
 primary key(mitarbeiter, monat, jahr));
@@ -66,10 +66,12 @@ krankheit varchar(128) references dbs.krankheit(name) not null,
 klasse varchar(128) references dbs.klasse(name) not null,
 primary key(krankheit, klasse));
 
+create sequence dbs.behandelt_id_seq increment 10 start 10;
 create table dbs.behandelt (
+id integer not null primary key DEFAULT nextval('dbs.behandelt_id_seq'),
 arzt integer references dbs.arzt(person) not null,
 krankheit varchar(128) references dbs.krankheit(name) not null,
-patient integer references dbs.patient(id) not null primary key,
+patient integer not null references dbs.patient(id) on delete cascade,
 dauer smallint not null,
 abgerechnet boolean not null default false);
 
@@ -77,9 +79,6 @@ create table dbs.akteneintrag (
 person integer references dbs.person(svnr) not null,
 krankenhaus integer references dbs.krankenhaus(id) not null,
 krankheit varchar(128) references dbs.krankheit(name) not null,
-von date not null,
-bis date not null,
-constraint chk_date CHECK (von < bis));
-
-
-
+von timestamp not null,
+bis timestamp not null,
+constraint chk_date CHECK (von <= bis));
