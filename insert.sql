@@ -43,7 +43,7 @@ insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abtei
 insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 30, 'krankheit 3');
 
 insert into dbs.klasse (name) values ('klasse 1');
-insert into dbs.klasse (name, uebergeordnet) values ('klasse 1.1', 'klasse 1');
+insert into dbs.klasse (name, uebergeor167dnet) values ('klasse 1.1', 'klasse 1');
 insert into dbs.klasse (name, uebergeordnet) values ('klasse 1.1.1', 'klasse 1.1');
 
 insert into dbs.zugeordnet (krankheit, klasse) values ( 'krankheit 1', 'klasse 1');
@@ -56,4 +56,4 @@ insert into dbs.behandelt (arzt, krankheit, patient, dauer, abgerechnet) values 
 
 insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (1, 10, 'krankheit 1', '2012-01-01 11:00:00', '2012-01-05 15:00:00');
 insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (1, 20, 'krankheit 1', '2012-01-01 11:00:00', '2012-01-05 11:00:00');
-insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (2, 10, 'krankheit 2', '2005-05-06 11:00:00', '2005-08-03 11:00:00');
+insert into dbs.akteneintrag (person, krankenhaus, krankheit, von, bis) values (4, 10, 'krankheit 2', '2005-05-06 11:00:00', '2005-08-03 11:00:00');

@@ -69,9 +69,10 @@ primary key(krankheit, klasse));
 
 create sequence dbs.behandelt_id_seq increment 10 start 10;
 create table dbs.behandelt (
+id integer not null primary key DEFAULT nextval('dbs.behandelt_id_seq'),
 arzt integer references dbs.arzt(person) not null,
 krankheit varchar(128) references dbs.krankheit(name) not null,
-patient integer not null references dbs.patient(id) on delete cascade,
+patient integer not null references dbs.patient(id),
 dauer smallint not null,
 abgerechnet boolean not null default false);
 

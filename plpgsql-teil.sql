@@ -85,6 +85,8 @@ begin
 		delete from dbs.behandelt where id = row.id;
 		fetch curs into row;
 	end loop;
+
+	delete from dbs.patient where id not in (select distinct patient from dbs.behandelt);
 	close curs;
 end;
 $$ 
