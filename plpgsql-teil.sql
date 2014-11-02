@@ -88,8 +88,8 @@ begin
 
 	delete from dbs.patient where id not in (select distinct patient from dbs.behandelt);
 	close curs;
-end;trigger
-$$ trigger
+end;
+$$ 
 language plpgsql;
 
 -- p_calc_salary
