@@ -18,6 +18,7 @@ drop table dbs.person;
 drop sequence dbs.patient_id_seq;
 drop sequence dbs.krankenhaus_id_seq;
 drop sequence dbs.behandelt_id_seq;
+drop sequence dbs.akteneintrag_id_seq;
 
 drop function t_check_treated();
 drop function t_check_hospital_chef();

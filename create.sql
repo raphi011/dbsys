@@ -55,7 +55,8 @@ create table dbs.spezialisiert (
 abteilung varchar(128) not null, 
 krankenhaus integer not null,
 krankheit varchar(128) not null, 
-foreign key (abteilung, krankenhaus) references dbs.abteilung (name, krankenhaus));
+foreign key (abteilung, krankenhaus) references dbs.abteilung (name, krankenhaus),
+primary key (abteilung,krankenhaus,krankheit));
 
 create table dbs.klasse (
 name varchar(128) not null primary key,
@@ -68,14 +69,16 @@ primary key(krankheit, klasse));
 
 create sequence dbs.behandelt_id_seq increment 10 start 10;
 create table dbs.behandelt (
-id integer not null primary key DEFAULT nextval('dbs.behandelt_id_seq'),
 arzt integer references dbs.arzt(person) not null,
 krankheit varchar(128) references dbs.krankheit(name) not null,
 patient integer not null references dbs.patient(id) on delete cascade,
 dauer smallint not null,
 abgerechnet boolean not null default false);
 
+
+create sequence dbs.akteneintrag_id_seq increment 10 start 10;
 create table dbs.akteneintrag (
+id integer not null primary key DEFAULT nextval('dbs.akteneintrag_id_seq'),
 person integer references dbs.person(svnr) not null,
 krankenhaus integer references dbs.krankenhaus(id) not null,
 krankheit varchar(128) references dbs.krankheit(name) not null,
