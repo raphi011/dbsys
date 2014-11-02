@@ -43,7 +43,7 @@ insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abtei
 insert into dbs.spezialisiert (abteilung, krankenhaus, krankheit) values ('abteilung 1', 30, 'krankheit 3');
 
 insert into dbs.klasse (name) values ('klasse 1');
-insert into dbs.klasse (name, uebergeor167dnet) values ('klasse 1.1', 'klasse 1');
+insert into dbs.klasse (name, uebergeordnet) values ('klasse 1.1', 'klasse 1');
 insert into dbs.klasse (name, uebergeordnet) values ('klasse 1.1.1', 'klasse 1.1');
 
 insert into dbs.zugeordnet (krankheit, klasse) values ( 'krankheit 1', 'klasse 1');
