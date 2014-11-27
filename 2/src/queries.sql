@@ -10,7 +10,17 @@ WITH RECURSIVE classes(name, uebergeordnet, level) as (
 
 
 /* Query 2 */
-# TODO Write Query 2 here 
-
-
-
+WITH sum_incomes as (
+	select svnr, sum(honorar) as sum_honorar
+	from lohnzettel 
+	group by svnr, honorar
+	), max_min_incomes as (
+	select max(sum_honorar) as maxi, min(sum_honorar) as mini
+	from sum_incomes
+	)
+select p.name, si.sum_honorar
+from max_min_incomes mm, sum_incomes si
+join person p
+on si.svnr = p.svnr
+where	si.sum_honorar = mm.maxi or 
+	si.sum_honorar = mm.mini
