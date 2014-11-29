@@ -12,9 +12,9 @@
     <property name="connection.host" value="localhost" />
     <property name="connection.port" value="5432" />
 
-    <property name="database" value="TODO FILL IN" />
-    <property name="username" value="TODO FILL IN" />
-    <property name="password" value="TODO FILL IN" />
+    <property name="database" value="u0828630" />
+    <property name="username" value="u0828630" />
+    <property name="password" value="13281328" />
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}">

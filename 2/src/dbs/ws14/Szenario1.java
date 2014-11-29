@@ -89,7 +89,7 @@ public class Szenario1 {
         
         try {
         
-            connection.setTransactionIsolation(/* TODO */);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
         
 
         /*
@@ -97,14 +97,28 @@ public class Szenario1 {
          * Anzahl der Patienten pro Krankenhaus
          */
 		 
-		 
+		 Statement s = connection.createStatement();
+
+            ResultSet rs = s.executeQuery(  "select m.arbeitet_kh_id, count(distinct b.patient)\n" +
+                                            "\tfrom behandlung b \n" +
+                                            "\tjoin mitarbeiter m \n" +
+                                            "\ton b.arzt =  m.svnr \n" +
+                                            "\tgroup by m.arbeitet_kh_id;");
+
+
+
+
             
             
         /*
          * Ausgeben der Anzahl der Patienten pro Krankenhaus
          */
-            
-			
+
+            while (rs.next()) {
+                int kh_id = rs.getInt("arbeitet_kh_id"), count = rs.getInt("count");
+                anz_kh.put(kh_id, count);
+                System.out.println(String.format("Krankenhaus : %d hat %d Patienten",kh_id,count));
+            }
             
         /*
          * Vorgegebener Codeteil
@@ -119,14 +133,27 @@ public class Szenario1 {
          * Abfrage 2:
          * Anzahl der Patienten pro Abteilung und Krankenhaus
          */
-        
+            Statement s2 = connection.createStatement();
+
+            ResultSet rs2 = s2.executeQuery("select * from patabt");
+
+
        
 
         /*
          * Geben Sie das Verhaeltnis der beiden abgefragten Werte aus
          */
-        
-        
+
+            while (rs2.next()) {
+                int abt_id = rs2.getInt("abt_id"), kh_id = rs2.getInt("kh_id"), patients = rs2.getInt("patients");
+                // todo: fix view!!! also show empty departments
+
+                int anz_patients = anz_kh.containsKey(kh_id) ? anz_kh.get(kh_id) : 0;
+
+                System.out.println(String.format("Verhältnis Krankenhaus - Abteilung (%d-%d): " +
+                        "%d - %d", kh_id, abt_id, anz_patients, patients));
+
+            }
 
         /*
          * Vorgegebener Codeteil

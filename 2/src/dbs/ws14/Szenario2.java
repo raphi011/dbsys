@@ -77,11 +77,11 @@ public class Szenario2 {
         
         try {
             
-            connection.setTransactionIsolation(/* TODO */);
+            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ); // todo
 
         /*
          * Abfrage 1:
-         * Ermitteln fuer das Krankenhaus mit der Nummer '10' für jede Abteilung folgende Informationen: 
+         * Ermitteln fuer das Krankenhaus mit der Nummer '10' fï¿½r jede Abteilung folgende Informationen: 
          * Der Name der Abteilung, die Krankheiten, auf die diese Abteilung spezialisiert ist, 
          * und die Anzahl der Patienten, die zu dieser Krankheit in dieser Abteilung in Behandlung sind. 
          * Das Ergebnis soll nach dem Abteilungsnamen aufsteigend und dann nach der Anzahl der Patienten 
