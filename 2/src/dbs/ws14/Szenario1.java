@@ -12,7 +12,7 @@ public class Szenario1 {
 
     private Connection connection = null;
 
-    public static void main(String[] args) {
+            public static void main(String[] args) {
         if (args.length <= 6 && args.length >= 4) {
             /*
              * args[0] ... type -> [a|b], 
@@ -89,7 +89,7 @@ public class Szenario1 {
 
         try {
 
-            connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
         
 
         /*
@@ -143,12 +143,10 @@ public class Szenario1 {
 
             while (rs.next()) {
                 int abt_id = rs.getInt("abt_id"), kh_id = rs.getInt("kh_id"), patients = rs.getInt("patients");
-                // todo: fix view!!! also show empty departments
-
                 int anz_patients = anz_kh.containsKey(kh_id) ? anz_kh.get(kh_id) : 0;
 
-                System.out.println(String.format("Verhältnis Krankenhaus - Abteilung (%d-%d): " +
-                                                 "%d - %d", kh_id, abt_id, anz_patients, patients));
+                System.out.println(String.format("Patienten (Krankenhaus ID %d, Abteilung ID %d): " +
+                                                 "%d, %d, Verhältnis 1 : %f", kh_id, abt_id, anz_patients, patients, (float)anz_patients/patients));
 
             }
 

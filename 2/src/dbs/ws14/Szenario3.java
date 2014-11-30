@@ -104,7 +104,6 @@ public class Szenario3 {
             avg = rs.getInt("avg");
         }
 
-
         System.out.println(String.format("Person mit SVNR %s hat %d Akteneinträge," +
                                          "Aufenthaltsdauer: Max = %d, Min = %d, Avg = %f",
                                          svnr,count,max,min, avg));
