@@ -91,19 +91,19 @@ public class Szenario2 {
             
             Statement s = connection.createStatement();
 
-            ResultSet rs = s.executeQuery("select a.name, s.k_id, \n" +
-                    "\t(select count(*)\n" +
-                    "\t from behandlung b \n" +
-                    "\t join mitarbeiter m\n" +
-                    "\t on b.arzt = m.svnr\n" +
-                    "\t where \tb.krankheit = s.k_id and \n" +
-                    "\t\tm.arbeitet_kh_id = a.kh_id and\n" +
-                    "\t\tm.arbeitet_abt_id = a.abt_id) patient_count\n" +
-                    "from abteilung a \n" +
-                    "join spezialisiert s \n" +
-                    "on a.kh_id = s.kh_id and a.abt_id = s.abt_id\n" +
-                    "where a.kh_id = 10\n" +
-                    "order by a.name asc, patient_count desc");
+            ResultSet rs = s.executeQuery(  "select a.name, s.k_id, " +
+                                                "(select count(*) " +
+                                                "from behandlung b " +
+                                                "join mitarbeiter m " +
+                                                "on b.arzt = m.svnr " +
+                                                "where b.krankheit = s.k_id and " +
+                                                "m.arbeitet_kh_id = a.kh_id and " +
+                                                "m.arbeitet_abt_id = a.abt_id) patient_count " +
+                                            "from abteilung a " +
+                                            "join spezialisiert s " +
+                                            "on a.kh_id = s.kh_id and a.abt_id = s.abt_id " +
+                                            "where a.kh_id = 10 " +
+                                            "order by a.name asc, patient_count desc");
 
             while (rs.next()) {
                 String abt_name = rs.getString("name");
@@ -113,6 +113,8 @@ public class Szenario2 {
                 System.out.println(String.format("Abteilung '%s' hat %d Patienten mit der Krankheit %s ",
                                     abt_name, pat_count, k_id));
             }
+
+            s.close();
             
             
         /*
@@ -129,21 +131,23 @@ public class Szenario2 {
          * Anzahl der Patienten pro Abteilung im Krankenhaus mit der Nummer '10'
          */
 
-            Statement s2 = connection.createStatement();
+            s = connection.createStatement();
 
-            ResultSet rs2 = s.executeQuery("select a.name, patients from patabt p \n" +
-                    "join abteilung a\n" +
-                    "on p.abt_id = a.abt_id and p.kh_id = a.kh_id\n" +
-                    "where p.kh_id = 10\n" +
+            rs = s.executeQuery("select a.name, patients from patabt p " +
+                    "join abteilung a " +
+                    "on p.abt_id = a.abt_id and p.kh_id = a.kh_id " +
+                    "where p.kh_id = 10 " +
                     "order by name asc");
 
-            while (rs2.next()) {
-                String abt_name = rs2.getString("name");
-                int pat_count = rs2.getInt("patients");
+            while (rs.next()) {
+                String abt_name = rs.getString("name");
+                int pat_count = rs.getInt("patients");
 
                 System.out.println(String.format("Abteilung '%s' hat %d Patienten insgesamt",
                         abt_name, pat_count));
             }
+
+            s.close();
          
             
         /*

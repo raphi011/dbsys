@@ -27,11 +27,11 @@ public class Szenario1 {
 
             if (args.length == 4) {
                 conn = DBConnector.getConnection(args[1], args[2], args[3]);
-            } 
+            }
             else {
                 if (args.length == 5) {
                     conn = DBConnector.getConnection(args[1], args[2], args[3], args[4], "");
-                } 
+                }
                 else {
                     conn = DBConnector.getConnection(args[1], args[2], args[3], args[4], args[5]);
                 }
@@ -42,18 +42,18 @@ public class Szenario1 {
 
                 if (args[0].equals("a")) {
                     s.runTransactionA();
-                } 
+                }
                 else {
                     s.runTransactionB();
                 }
-                
+
                 try {
-					conn.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(Szenario1.class.getName()).log(Level.SEVERE, null, ex);
-				}
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Szenario1.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-        } 
+        }
         else {
             System.err.println("Ungueltige Anzahl an Argumenten!");
         }
@@ -73,22 +73,22 @@ public class Szenario1 {
          */
     	
     	/* HashMap zum Speichern der Anzahl von Patienten pro Krankenhaus */
-    	HashMap<Integer,Integer> anz_kh = new HashMap<Integer,Integer>();
-    	
+        HashMap<Integer,Integer> anz_kh = new HashMap<Integer,Integer>();
+
         wait("Druecken Sie <ENTER> zum Starten der Transaktion ...");
         /*
          * ################################################################################
          */
-        
+
         System.out.println("Transaktion A Start");
 
         
         /*
          * Setzen Sie das aus Ihrer Sicht passende Isolation-Level:
          */
-        
+
         try {
-        
+
             connection.setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
         
 
@@ -96,14 +96,13 @@ public class Szenario1 {
          * Abfrage 1:
          * Anzahl der Patienten pro Krankenhaus
          */
-		 
-		 Statement s = connection.createStatement();
 
-            ResultSet rs = s.executeQuery(  "select m.arbeitet_kh_id, count(distinct b.patient)\n" +
-                                            "\tfrom behandlung b \n" +
-                                            "\tjoin mitarbeiter m \n" +
-                                            "\ton b.arzt =  m.svnr \n" +
-                                            "\tgroup by m.arbeitet_kh_id;");
+            Statement s = connection.createStatement();
+            ResultSet rs = s.executeQuery(  "select m.arbeitet_kh_id, count(distinct b.patient) " +
+                                            "from behandlung b " +
+                                            "join mitarbeiter m " +
+                                            "on b.arzt =  m.svnr " +
+                                            "group by m.arbeitet_kh_id");
 
 
 
@@ -119,12 +118,13 @@ public class Szenario1 {
                 anz_kh.put(kh_id, count);
                 System.out.println(String.format("Krankenhaus : %d hat %d Patienten",kh_id,count));
             }
-            
+
+            s.close();
         /*
          * Vorgegebener Codeteil
          * ################################################################################
          */
-        wait("Druecken Sie <ENTER> zum Fortfahren ...");
+            wait("Druecken Sie <ENTER> zum Fortfahren ...");
         /*
          * ################################################################################
          */
@@ -133,40 +133,39 @@ public class Szenario1 {
          * Abfrage 2:
          * Anzahl der Patienten pro Abteilung und Krankenhaus
          */
-            Statement s2 = connection.createStatement();
+            s = connection.createStatement();
 
-            ResultSet rs2 = s2.executeQuery("select * from patabt");
-
-
-       
+            rs = s.executeQuery("select * from patabt");
 
         /*
          * Geben Sie das Verhaeltnis der beiden abgefragten Werte aus
          */
 
-            while (rs2.next()) {
-                int abt_id = rs2.getInt("abt_id"), kh_id = rs2.getInt("kh_id"), patients = rs2.getInt("patients");
+            while (rs.next()) {
+                int abt_id = rs.getInt("abt_id"), kh_id = rs.getInt("kh_id"), patients = rs.getInt("patients");
                 // todo: fix view!!! also show empty departments
 
                 int anz_patients = anz_kh.containsKey(kh_id) ? anz_kh.get(kh_id) : 0;
 
                 System.out.println(String.format("Verhältnis Krankenhaus - Abteilung (%d-%d): " +
-                        "%d - %d", kh_id, abt_id, anz_patients, patients));
+                                                 "%d - %d", kh_id, abt_id, anz_patients, patients));
 
             }
+
+            s.close();
 
         /*
          * Vorgegebener Codeteil
          * ################################################################################
          */
-        wait("Druecken Sie <ENTER> zum Beenden der Transaktion ...");
+            wait("Druecken Sie <ENTER> zum Beenden der Transaktion ...");
         /*
          * ################################################################################
          */
-        
-        
-        
-        } 
+
+
+
+        }
         catch (SQLException ex) {
             Logger.getLogger(Szenario1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -186,31 +185,31 @@ public class Szenario1 {
         wait("Druecken Sie <ENTER> zum Starten der Transaktion ...");
 
         System.out.println("Transaktion B Start");
-        
+
         try {
             Statement stmt = connection.createStatement();
-            
-            
+
+
             stmt.executeUpdate("INSERT INTO Patient(svnr) VALUES ('5287081081');");
             stmt.executeUpdate("INSERT INTO Behandlung VALUES (" +
                                "'9382030476','5287081081',8,10,FALSE);");
 
             stmt.close();
-            
+
             System.out.println("Eine Behandlung wurde hinzugefuegt ...");
-            
+
             wait("Druecken Sie <ENTER> zum Beenden der Transaktion ...");
 
             connection.commit();
-            
+
             wait("Druecken Sie <ENTER> zum Beenden des Szenarios ...");
             stmt = connection.createStatement();
             stmt.executeUpdate("DELETE FROM Behandlung WHERE patient = '5287081081'");
             stmt.executeUpdate("DELETE FROM Patient WHERE svnr = '5287081081'");
             stmt.close();
             connection.commit();
-            
-        } 
+
+        }
         catch (SQLException ex) {
             Logger.getLogger(Szenario1.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -226,8 +225,8 @@ public class Szenario1 {
          * Vorgegebener Codeteil 
          * ################################################################################
          */
-    	System.out.println(message);
-    	Scanner scanner = new Scanner(System.in);
+        System.out.println(message);
+        Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
         /*
          * ################################################################################
