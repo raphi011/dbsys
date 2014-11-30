@@ -81,7 +81,7 @@ public class Szenario2 {
 
         /*
          * Abfrage 1:
-         * Ermitteln fuer das Krankenhaus mit der Nummer '10' f�r jede Abteilung folgende Informationen: 
+         * Ermitteln fuer das Krankenhaus mit der Nummer '10' für jede Abteilung folgende Informationen:
          * Der Name der Abteilung, die Krankheiten, auf die diese Abteilung spezialisiert ist, 
          * und die Anzahl der Patienten, die zu dieser Krankheit in dieser Abteilung in Behandlung sind. 
          * Das Ergebnis soll nach dem Abteilungsnamen aufsteigend und dann nach der Anzahl der Patienten 
@@ -89,7 +89,30 @@ public class Szenario2 {
          * 
          */
             
-            
+            Statement s = connection.createStatement();
+
+            ResultSet rs = s.executeQuery("select a.name, s.k_id, \n" +
+                    "\t(select count(*)\n" +
+                    "\t from behandlung b \n" +
+                    "\t join mitarbeiter m\n" +
+                    "\t on b.arzt = m.svnr\n" +
+                    "\t where \tb.krankheit = s.k_id and \n" +
+                    "\t\tm.arbeitet_kh_id = a.kh_id and\n" +
+                    "\t\tm.arbeitet_abt_id = a.abt_id) patient_count\n" +
+                    "from abteilung a \n" +
+                    "join spezialisiert s \n" +
+                    "on a.kh_id = s.kh_id and a.abt_id = s.abt_id\n" +
+                    "where a.kh_id = 10\n" +
+                    "order by a.name asc, patient_count desc");
+
+            while (rs.next()) {
+                String abt_name = rs.getString("name");
+                int k_id = rs.getInt("k_id");
+                int pat_count = rs.getInt("patient_count");
+
+                System.out.println(String.format("Abteilung '%s' hat %d Patienten mit der Krankheit %s ",
+                                    abt_name, pat_count, k_id));
+            }
             
             
         /*
@@ -105,8 +128,22 @@ public class Szenario2 {
          * Abfrage 2:
          * Anzahl der Patienten pro Abteilung im Krankenhaus mit der Nummer '10'
          */
-                  
-         
+
+            Statement s2 = connection.createStatement();
+
+            ResultSet rs2 = s.executeQuery("select a.name, patients from patabt p \n" +
+                    "join abteilung a\n" +
+                    "on p.abt_id = a.abt_id and p.kh_id = a.kh_id\n" +
+                    "where p.kh_id = 10\n" +
+                    "order by name asc");
+
+            while (rs2.next()) {
+                String abt_name = rs2.getString("name");
+                int pat_count = rs2.getInt("patients");
+
+                System.out.println(String.format("Abteilung '%s' hat %d Patienten insgesamt",
+                        abt_name, pat_count));
+            }
          
             
         /*
